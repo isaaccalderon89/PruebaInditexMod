@@ -1,0 +1,22 @@
+DROP TABLE IF EXISTS price;
+CREATE TABLE price
+(
+id_Price INT PRIMARY KEY NOT NULL,
+id_Brand INT,
+start_Date TIMESTAMP,
+end_Date TIMESTAMP,
+price_List INT,
+product_Id INT,
+priority INT,
+price DOUBLE,
+curr VARCHAR(3)
+);
+
+INSERT INTO price (id_Price, id_Brand, start_Date, end_Date, price_List, product_Id, priority, price, curr)
+VALUES (1, 1, TIMESTAMP '2020-06-14 00:00:00', TIMESTAMP '2020-12-31 23:59:59', 1, 35455, 0, 35.50, 'EUR');
+INSERT INTO price (id_Price, id_Brand, start_Date, end_Date, price_List, product_Id, priority, price, curr)
+VALUES (2, 1, TIMESTAMP '2020-06-14 15:00:00', TIMESTAMP '2020-06-14 18:30:00', 2, 35455, 1, 25.45, 'EUR');
+INSERT INTO price (id_Price, id_Brand, start_Date, end_Date, price_List, product_Id, priority, price, curr)
+VALUES (3, 1, TIMESTAMP '2020-06-15 00:00:00', TIMESTAMP '2020-06-15 11:00:00', 3, 35455, 1, 30.50, 'EUR');
+INSERT INTO price (id_Price, id_Brand, start_Date, end_Date, price_List, product_Id, priority, price, curr)
+VALUES (4, 1, TIMESTAMP '2020-06-15 16:00:00', TIMESTAMP '2020-12-31 23:59:59', 4, 35455, 1, 38.95, 'EUR');
