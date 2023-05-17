@@ -6,6 +6,7 @@ import com.neoris.pruebaInditexMod.usecases.FindAllPriceUseCase;
 import com.neoris.pruebaInditexMod.usecases.FindMatchingPriceUsesCases;
 import com.neoris.pruebaInditexMod.usecases.FindPriceByIdUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,15 +60,34 @@ public class PriceController {
      * @return una Json con los datos de la entidad que pasamos por parámetros
      */
     @GetMapping(value = "/price/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Price> getPriceById(@PathVariable Long id){
-        return ResponseEntity.ok(findPriceByIdUsesCase.findPriceById(id));
+    public ResponseEntity<Price> getPriceById(@PathVariable Long id) {
+        try {
+            Price price = findPriceByIdUsesCase.findPriceById(id);
+            if (price != null) {
+                return ResponseEntity.ok(price);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping(value = "/price/{brandId}/{productId}/{dateTime}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Price> getPriceByBrandIProductIdDateTime(@PathVariable Long brandId,@PathVariable Long productId,@PathVariable String dateTime){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-        LocalDateTime finalDate = LocalDateTime.parse(dateTime, formatter);
-        return ResponseEntity.ok(findMatchingPricesUseCase.findMatchingPrices(brandId,productId,finalDate));
+    public ResponseEntity<Price> getPriceByBrandIProductIdDateTime(@PathVariable Long brandId, @PathVariable Long productId, @PathVariable String dateTime) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+            LocalDateTime finalDate = LocalDateTime.parse(dateTime, formatter);
+            Price price = findMatchingPricesUseCase.findMatchingPrices(brandId, productId, finalDate);
+
+            if (price != null) {
+                return ResponseEntity.ok(price);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
 }
